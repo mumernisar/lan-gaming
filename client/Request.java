@@ -25,7 +25,6 @@ public class Request {
     public static String fetchBins(String collectionId, String masterKey, String lastBinId, String sortOrder) {
         HttpURLConnection connection = null;
         try {
-            // Construct the URL based on whether the lastBinId is provided
             String urlStr = "https://api.jsonbin.io/v3" + "/c/" + collectionId + "/bins" + (lastBinId != null && !lastBinId.isEmpty() ? "/" + lastBinId : "");
             URI uri = new URI(urlStr);
             URL url = uri.toURL();
@@ -34,7 +33,6 @@ public class Request {
             connection.setRequestMethod("GET");
             connection.setRequestProperty("X-Master-Key", masterKey);
     
-            // Optional: Sort Order
             if (sortOrder != null && !sortOrder.isEmpty()) {
                 connection.setRequestProperty("X-Sort-Order", sortOrder);
             }
@@ -73,7 +71,7 @@ public class Request {
             connection.setRequestMethod(method);
             connection.setRequestProperty("Content-Type", "application/json");
             connection.setRequestProperty("X-Master-Key", masterKey);
-            connection.setRequestProperty("X-Access-Key", accessToken); // Access Key Header
+            connection.setRequestProperty("X-Access-Key", accessToken); 
             connection.setDoOutput(true);
 
             if (collectionId != null && !collectionId.isEmpty()) {
@@ -110,6 +108,10 @@ public class Request {
                 connection.disconnect();
             }
         }
+    }
+
+    public static String getApiUrl() {
+        return API_URL;
     }
 }
 

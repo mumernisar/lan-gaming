@@ -22,16 +22,10 @@ public class Server {
         // String myMasterKey = "MASTER_TOKEN";
         // String collectionID = "COLLECTION_ID";
 
-
-
         InetAddress myIP=InetAddress.getLocalHost();
         final String curIP = String.format("{\"ip\":\"%s\"}", myIP.getHostAddress());
 
-
-
         //////////////////////////////////////////////////////////////////////////////////////////////////
-
-
 
 
         CompletableFuture<Void> future = CompletableFuture.runAsync(() -> {
@@ -89,9 +83,22 @@ public class Server {
     
                 while (in.hasNextLine()) {
                     String input = in.nextLine();
+                    System.out.println("raw input " + input);
                     for (PrintWriter writer : writers) {
-                        writer.println(input);
-                        System.out.println("Received: " + input);
+                        HashMap<String, String> rmap = MapHash.parse(input);
+                        if ((rmap.get("payload" ) != null) && rmap.get("payload").contains("typeracer")) {
+                            rmap.remove("payload");
+                            rmap.put("type", "game");
+                            rmap.put("name", "typeracer");
+                            String smap =  MapHash.unparse(rmap);
+                            System.out.println("Sending SIMLE: " + smap);
+                            writer.println(smap);
+                        } else {
+                            String smap =  MapHash.unparse(rmap);
+                            System.out.println("before" + rmap + "after " + smap);
+                            System.out.println("Sending SIMLE: " + smap);
+                            writer.println(smap);
+                        }
                     }
                 }
             } catch (IOException e) {

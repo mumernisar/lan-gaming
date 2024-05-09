@@ -1,3 +1,4 @@
 .env
 JsonResponse.java
 /client/*.class
+/server/*.class
