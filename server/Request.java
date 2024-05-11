@@ -8,34 +8,44 @@ import java.util.Scanner;
 
 
 public class Request {
+            
+        ////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////
+
+        // SET THESE FROM JSONBIN.IO BEFORE EXECUTION
+        // String myToken = "ACCESS_TOKEN";
+        // String myMasterKey = "MASTER_TOKEN";
+        // String collectionID = "COLLECTION_ID";
 
     private static final String API_URL = "https://api.jsonbin.io/v3/b";
 
-    public static String post(String dataJson, String masterKey, String collectionId ,String accessToken ) {
-        return sendRequest("POST", dataJson, masterKey, null, collectionId , accessToken);
+    public static String post(String dataJson ) {
+        return sendRequest("POST", dataJson, myMasterKey, null, collectionID , myToken);
     }
 
-    public static String get(String binId, String masterKey ,String accessToken ) {
-        return sendRequest("GET", null, masterKey, binId, null , accessToken);
+    public static String get(String binId ) {
+        return sendRequest("GET", null, myMasterKey, binId, null , myToken);
     }
 
-    public static String delete(String binId, String masterKey ,String accessToken) {
-        return sendRequest("DELETE", null, masterKey, binId, null , accessToken );
+    public static String delete(String binId) {
+        return sendRequest("DELETE", null, myMasterKey, binId, null , myToken );
     }
-    public static String fetchBins(String collectionId, String masterKey, String lastBinId, String sortOrder) {
+    public static String fetchBins() {
         HttpURLConnection connection = null;
         try {
-            String urlStr = "https://api.jsonbin.io/v3" + "/c/" + collectionId + "/bins" + (lastBinId != null && !lastBinId.isEmpty() ? "/" + lastBinId : "");
+            String urlStr = "https://api.jsonbin.io/v3" + "/c/" + collectionID + "/bins/";
             URI uri = new URI(urlStr);
             URL url = uri.toURL();
             
             connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
-            connection.setRequestProperty("X-Master-Key", masterKey);
+            connection.setRequestProperty("X-Master-Key", myMasterKey);
     
-            if (sortOrder != null && !sortOrder.isEmpty()) {
-                connection.setRequestProperty("X-Sort-Order", sortOrder);
-            }
+            connection.setRequestProperty("X-Sort-Order", "ascending");
     
             int responseCode = connection.getResponseCode();
             System.out.println("GET Response Code: " + responseCode);

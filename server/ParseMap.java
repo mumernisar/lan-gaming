@@ -1,6 +1,6 @@
 import java.util.HashMap;
 
-public class MapHash {
+public class ParseMap {
 
     public static String unparse(HashMap<String, String> map) {
         StringBuilder builder = new StringBuilder();
