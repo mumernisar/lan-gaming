@@ -1,3 +1,2 @@
-Time=  [############################################################||]
-Finished at a top speed of 47
-stop
+progress=51
+wpm=5

@@ -72,12 +72,18 @@ def getInput(sentence , mode):
         if((mode == "1" and time.time() - start_time >= 60) or (finished)): 
             text_file = open("convo.txt", "w")
             if(mode == '1'):
-                x= f'{"Time= "} [{"#" *round( round(time.time()-start_time))}||{"_" * round(  (60 - round(time.time()-start_time)))}]\n'
+                # x= f'{"Time= "} [{"#" *round( round(time.time()-start_time))}||{"_" * round(  (60 - round(time.time()-start_time)))}]\n'
+                elapsed_time = time.time() - start_time
+                percentage = int((elapsed_time / 60) * 100) # Percentage of 1 minute passed
+                x = f'progress={percentage}\n'
             else:
-                x = f'Progress=  [{"#" * round(len(st)/5)}||{"_" * round((len(sentence) - len(st)) / 5 )}]  Time: { round(time.time()-start_time)}\n'
-            
+                # x = f'Progress=  [{"#" * round(len(st)/5)}||{"_" * round((len(sentence) - len(st)) / 5 )}]  Time: { round(time.time()-start_time)}\n'
+                progress = int((len(st) / len(sentence)) * 100) # Percentage of sentence typed
+                elapsed_time = int(time.time() - start_time)
+                x = f'progress={progress}\n'
+
             wpm = calculate_wpm(time.time() - start_time , st)
-            y = f"Finished at a top speed of {int(wpm)}\n"
+            y = f"wpm={int(wpm)}"
             text_file.writelines([x , y , "stop"])
             text_file.close()
             break
@@ -126,12 +132,18 @@ def getInput(sentence , mode):
         if(time.time() - convo_start_time >= 5):
             text_file = open("convo.txt", "w")
             if(mode == '1'):
-                x= f'{"Time= "} [{"#" *round( round(time.time()-start_time))}||{"_" * round(  (60 - round(time.time()-start_time)))}]\n'
+                # x= f'{"Time= "} [{"#" *round( round(time.time()-start_time))}||{"_" * round(  (60 - round(time.time()-start_time)))}]\n'
+                elapsed_time = time.time() - start_time
+                percentage = int((elapsed_time / 60) * 100) # Percentage of 1 minute passed
+                x = f'progress={percentage}\n'
             else:
-                x = f'Progress=  [{"#" * round(len(st)/5)}||{"_" * round((len(sentence) - len(st)) / 5 )}]  Time: { round(time.time()-start_time)}\n'
-            
+                # x = f'Progress=  [{"#" * round(len(st)/5)}||{"_" * round((len(sentence) - len(st)) / 5 )}]  Time: { round(time.time()-start_time)}\n'
+                progress = int((len(st) / len(sentence)) * 100) # Percentage of sentence typed
+                elapsed_time = int(time.time() - start_time)
+                x = f'progress={progress}\n'
+
             wpm = calculate_wpm(time.time() - start_time , st)
-            y = f"Fellow is at a top speed of {int(wpm)}"
+            y = f"wpm={int(wpm)}"
             text_file.writelines([x , y])
             text_file.close()
             convo_start_time = time.time()
@@ -232,7 +244,7 @@ def begin():
     lb = ""
     # show leaderboard only in case accuracy was higher than 60 percenst
     if(accuracy > 60):
-        click.echo("Showoff your skill in the leaderboard? \n (1 for Yes) \n (2 for No) :" , nl=False)
+        click.echo("Showoff your skill in the offlien leaderboard? \n (1 for Yes) \n (2 for No) :" , nl=False)
         while(lb != "1" and lb != "2"):
             print("\r \n Choice[1/2]: ",end="")
             lb = click.getchar(echo=True)

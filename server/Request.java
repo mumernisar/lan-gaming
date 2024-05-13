@@ -20,9 +20,6 @@ public class Request {
         // String myToken = "ACCESS_TOKEN";
         // String myMasterKey = "MASTER_TOKEN";
         // String collectionID = "COLLECTION_ID";
-        static String myToken ="$2a$10$koZ/yeSqeo8WbpSBdzFgZOlaqbiyluCXc8owJHxmpWhApcg3.b8Z2";
-        static String myMasterKey = "$2a$10$.dep6oDvBbWezLBN0Ec6qeaWgPgiF.K/JbxExRVsgIYyw5xHwa/W6";
-        static String collectionID = "663b9390acd3cb34a844ca7b";
 
     private static final String API_URL = "https://api.jsonbin.io/v3/b";
 

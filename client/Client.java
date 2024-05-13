@@ -1,115 +1,3 @@
-// import java.io.*;
-// import java.net.*;
-// import java.util.HashMap;
-// import java.util.Scanner;
-// import java.util.concurrent.Executors;
-
-// public class Client {
-//     public static void main(String[] args) throws Exception {
-//         Scanner console = new Scanner(System.in);
-//         long currentTimeMillis = System.currentTimeMillis();
-//         System.out.print("Enter you username : ");
-//         String name = console.nextLine();
-//         if (name == "" ){
-//             name = "user";
-//         }
-//         String id =  name + "_" + String.valueOf(currentTimeMillis);
-
-//         final String serverAddress = "localhost";
-//         getServer(serverAddress, console);
-//         System.out.println("Connecting to server with ip "+ serverAddress);
-//         Socket socket = new Socket(serverAddress, 12345);
-
-//         PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-
-//         Scanner scanner = new Scanner(System.in);
-//         System.out.println("Enter your messages (exit to quit):");
-//         new Thread(new Runnable() {
-//             public void run() {
-//                 handleIncoming(socket, id, out);
-//             }
-//             }).start();
-
-//             /// handle outgoing
-//         while (scanner.hasNextLine()) {
-//             String input = scanner.nextLine();
-//             if (input.equalsIgnoreCase("exit")) break;
-//             HashMap<String, String> ms = new HashMap<>();
-//             ms.put("id", id);
-//             ms.put("payload", input);
-//             String ds = ParseMap.unparse(ms);
-//             out.println(ds); 
-//         }
-//         socket.close();
-//     }
-//     private static void handleIncoming(Socket socket , String id , PrintWriter out) {
-
-//                 try {
-//                     Scanner in = new Scanner(socket.getInputStream());
-//                     while (in.hasNextLine()) {
-//                         String message = in.nextLine();
-//                         HashMap<String,String> rmap = ParseMap.parse(message);
-
-//                         if (rmap.containsKey("type") && rmap.get("type").equals("game")) {
-//                             Executors.newSingleThreadExecutor().execute(new Runnable() {
-//                                 public void run() {
-//                                     if (rmap.get("name").equals("typeracer")) {
-//                                         System.out.println("Running typeracer");
-//                                         Games.typeracer(out , id);
-//                                     }
-//                                     System.out.println("Game ended");
-//                                 }
-//                             }).start()
-//                             System.out.println(message + "Done with if");
-//                         }else if (rmap.containsKey("type") && rmap.get("type").equals("game_data")) {
-//                             System.out.println("Runnign elif with data" + rmap);
-//                             if(!rmap.get("type").equals(id)) {
-//                                 System.out.println(rmap.get("data") + " from " + rmap.get("id"));
-//                             }else {
-//                                 System.out.println(rmap.get("data") + "Shouldnt get this" );
-//                             }
-//                             System.err.println("end of line");
-//                         } else if (rmap.containsKey("payload")) {
-//                             System.out.println(rmap.get("payload"));
-//                         }else {
-//                             System.out.println("Something mustve gone wrong . DAta :" + rmap);
-
-//                         }
-//                     }
-//                 } catch (Exception e) {
-//                     e.printStackTrace();
-//                 }
-//     }
-    // private static void getServer(String serverAddress ,Scanner console) {
-    //     try {
-    //         String jsonData = Request.fetchBins();
-    //         jsonData = jsonData.substring(1, jsonData.length() - 1);
-    //         String[] items = jsonData.split("\\},\\{");
-    //         String binID = "";
-
-    //         for (String item : items) {
-    //             String[] parts = item.split("\"record\":\"");
-    //             binID = parts[1].split("\"")[0]; 
-    //         }
-    //         String response = Request.get(binID);
-
-    //         int ipStartIndex = response.indexOf("\"ip\":\"") + "\"ip\":\"".length();
-    //         int ipEndIndex = response.indexOf("\"", ipStartIndex);
-    //         String ipAddress = response.substring(ipStartIndex, ipEndIndex);
-
-    //         serverAddress = ipAddress;
-    //         System.out.println("Success 🥳🥳🎉");
-
-    //     } catch (Exception e) {
-    //         System.out.print("Enter IP addres manually : "  );
-    //         serverAddress = console.nextLine();
-    //     }
-    // }
-
-// }
-
-
-
 import java.io.*;
 import java.net.*;
 import java.util.HashMap;
@@ -118,7 +6,8 @@ import java.util.Scanner;
 public class Client {
 
     private static final int PORT = 12345;
-    
+    private static final Leaderboard lb = new Leaderboard(); // <-- Create a single Leaderboard instance
+    private static final String[][] data = new String[4][3];
     public static void main(String[] args) {
         Scanner console = new Scanner(System.in);
         System.out.print("Enter your username: ");
@@ -193,15 +82,21 @@ public class Client {
             while (in.hasNextLine()) {
                 String message = in.nextLine();
                 HashMap<String, String> parsedMessage = ParseMap.parse(message);
-    
+               
+                int filled = 0;
                 String messageType = parsedMessage.get("type");
-    
+
+                System.out.println("Running  with data " + messageType + parsedMessage);
+
                 switch (messageType) {
                     case "game":
-                        handleGameMessage(out, parsedMessage , userId);
+                        System.out.println("Running if with data " + parsedMessage);
+                        handleGameMessage(lb , out, parsedMessage , userId);
                         break;
                     case "game_data":
-                        handleGameDataMessage(parsedMessage, userId);
+                    System.out.println("Running else-if with data " + parsedMessage);
+
+                        handleGameDataMessage( filled,lb , data , parsedMessage, userId);
                         break;
                     default:
                         handleDefaultMessage(parsedMessage, userId);
@@ -213,23 +108,48 @@ public class Client {
             e.printStackTrace();
         }
     }
-    
-    private static void handleGameMessage(PrintWriter out , HashMap<String, String> parsedMessage , String userId) {
+
+    private static void handleGameMessage( Leaderboard lb , PrintWriter out , HashMap<String, String> parsedMessage , String userId) {
         if ("typeracer".equals(parsedMessage.get("name"))) {
+            lb.initializeGUI();
             System.out.println("Running typeracer");
-            Games.typeracer(out, userId);
+            new Thread(() -> Games.typeracer(out, userId)).start();
             System.out.println("Game ended");
         } else {
             System.out.println("Game message received: " + parsedMessage);
         }
     }
-    
-    private static void handleGameDataMessage(HashMap<String, String> parsedMessage, String userId) {
-        System.out.println("Running else-if with data " + parsedMessage);
-        if (!parsedMessage.get("id").equals(userId)) {
-            System.out.println(parsedMessage.get("data") + " from " + parsedMessage.get("id"));
+    private static void handleGameDataMessage(int filled, Leaderboard lb, String[][] data, HashMap<String, String> parsedMessage, String userId) {
+        String id = parsedMessage.get("id");
+        // Ensure 'id' is not null before using it in .equals()
+        if (id != null && "typeracer".equals(parsedMessage.get("game"))) {
+            System.out.println("Running typeracer gamedata");
+            boolean found = false;
+            // Loop through the data array
+            boolean rowIsEmpty = data[0][0] == null;  // Check if the first column of the row is null
+            for (int i = 0; i < data.length; i++) {
+                rowIsEmpty = data[i][0] == null;
+                if (data[i][0] != null && id.equals(data[i][0])) {  // Check if IDs match
+                    // Existing user data found: update progress and speed
+                    data[i][1] = parsedMessage.get("progress");
+                    data[i][2] = parsedMessage.get("wpm");
+                    break;  // No need to continue the loop after finding the match
+                } else if (rowIsEmpty) {
+                    // The row is empty: populate it with new user data
+                    data[i][0] = id;
+                    data[i][1] = parsedMessage.get("progress");
+                    data[i][2] = parsedMessage.get("wpm");
+                    break;  // No need to continue the loop after populating the row
+                }
+            }
+
+            // data[0][0] = id;
+            // data[0][1] = parsedMessage.get("progress");
+            // data[0][2] = parsedMessage.get("wpm");
+            lb.updateLeaderboardWithData(data);
+            
         } else {
-            System.out.println(parsedMessage.get("data") + "ERROR### Shouldn't have receive own data.");
+            System.out.println("Game not typeracer or ID is null " + parsedMessage.get("data") + " from " + parsedMessage.get("id"));
         }
     }
     

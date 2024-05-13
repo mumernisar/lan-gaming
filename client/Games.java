@@ -27,20 +27,32 @@ public class Games {
                 }
             Thread.sleep(5000);
             try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-                String tl = "";
                 String line;
+                String wpm = "0";
+                String percentile = "0";
+                String end = "false";
                     while ((line = reader.readLine()) != null) { 
-                        tl = tl + line;
+                        System.out.println("Check line " + line);
+                        if (line.contains("wpm")) {
+                            wpm = line.split("=")[1];
+                        }
+                        if (line.contains("progress")) {
+                            percentile = line.split("=")[1];
+                        }
                         if (line.equals("stop")){
                             stop = true;
+                            end = "true";
                             break;
                         }
                 }
-                if (tl != null && !tl.isEmpty()) {
+                if (wpm != "0" || percentile != "0") {
                     HashMap<String,String> smap = new HashMap<>();
                     smap.put("type", "game_data");
-                    smap.put("data", tl);
+                    smap.put("game", "typeracer");
+                    smap.put("wpm", wpm);
+                    smap.put("progress", percentile);
                     smap.put("id" , id);
+                    smap.put("end" , end);
                     String ds = ParseMap.unparse(smap);
                     System.out.println("Sending ds" + ds);
                     out.println(ds);
