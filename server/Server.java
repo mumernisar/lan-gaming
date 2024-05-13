@@ -110,6 +110,8 @@ public class Server {
                 rmap.remove("payload");
                 rmap.put("type", "game");
                 rmap.put("name", "typeracer");
+            }else if (rmap.get("type")  == null){
+                rmap.put("type", "general");
             }
             return ParseMap.unparse(rmap);
         }
