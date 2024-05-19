@@ -4,7 +4,7 @@ import time
 # click is an external library used for getting a single character input at a time
 import click
 # playsound is a v small library soleley used for playing an audio
-
+import playsound
 
 # Function to generate a random sentence from a file (text.txt)
 def generate_random_sentence(mode):
@@ -83,8 +83,9 @@ def getInput(sentence , mode):
                 x = f'progress={progress}\n'
 
             wpm = calculate_wpm(time.time() - start_time , st)
-            y = f"wpm={int(wpm)}"
-            text_file.writelines([x , y , "stop"])
+            y = f"wpm={int(wpm)}\n"
+            z = f"accuracy={round(((corrects)/len(st)) * 100)}"
+            text_file.writelines([x , y , z , "\nstop"])
             text_file.close()
             break
         # Get char gets a character as input
@@ -117,7 +118,7 @@ def getInput(sentence , mode):
         if(len(repr(c)) == 3):
             if(c != sentence[word]):
                 if len(st) != 0 and st[-1] != sentence[word -1]:    
-                    # playsound("./error.mp3",False)
+                    playsound.playsound("./error.mp3",False)
                     continue
                 st = st +  c 
                 mistakes.append(word)
@@ -143,8 +144,9 @@ def getInput(sentence , mode):
                 x = f'progress={progress}\n'
 
             wpm = calculate_wpm(time.time() - start_time , st)
-            y = f"wpm={int(wpm)}"
-            text_file.writelines([x , y])
+            y = f"wpm={int(wpm)}\n"
+            z = f"accuracy={round(((corrects)/len(st)) * 100)}"
+            text_file.writelines([x , y , z])
             text_file.close()
             convo_start_time = time.time()
 

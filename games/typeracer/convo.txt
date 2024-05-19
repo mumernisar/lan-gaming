@@ -1,2 +1,3 @@
-progress=51
-wpm=5
+progress=14
+wpm=56
+accuracy=98

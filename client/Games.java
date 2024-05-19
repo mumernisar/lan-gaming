@@ -5,13 +5,45 @@ import java.io.PrintWriter;
 import java.util.HashMap;
 
 public class Games {
-    public static void main (String[] args){
-        
+    public static void typeracer_handleData( String[][] data , HashMap<String, String> parsedMessage , String id){
+        boolean rowIsEmpty = data[0][0] == null;  
+        for (int i = 0; i < data.length; i++) {
+            rowIsEmpty = data[i][0] == null;
+            if (data[i][0] != null && id.equals(data[i][0])) { 
+                data[i][1] = parsedMessage.get("progress");
+                data[i][2] = parsedMessage.get("wpm");
+                data[i][3] = parsedMessage.get("accuracy");
+                break;
+            } else if (rowIsEmpty) {
+                data[i][0] = id;
+                data[i][1] = parsedMessage.get("progress");
+                data[i][2] = parsedMessage.get("wpm");
+                data[i][3] = parsedMessage.get("accuracy");
+                break;
+            }
+        }
+        typeracer_printUsers(data);
+     }
+
+     private static void typeracer_printUsers(String[][] data) {
+        System.out.format("Initializing GUI %s" , "🔮🎉😂🎊");
+
+        System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+        System.out.println("   Name                 |       Progress         |  Words Per Minute(WPM) |     Accuracy    ");
+        System.out.println("--------------------------------------------------------------------------------------------");
+        for (String[] row : data) {
+                if (row[0] != null){
+                    String name = row[0];
+                    String progress = row[1];
+                    String wpm = row[2];
+                    String accuracy = row[3];
+                    System.out.format("%-24s|%-24s|%-24s|%-24s\n", name, (progress), (wpm), accuracy);
+            }
+        }
     }
-    
     public static void typeracer( PrintWriter out , String id){
         try {
-            String command = "start powershell.exe -NoExit -Command \"cd ../games/typeracer ; python dependencies.py ; python SpeedTyping.py\"";
+            String command = "start powershell.exe -NoExit -Command \"cd ../games/typeracer ; python dependencies.py ; python Typeracer.py\"";
             
             ProcessBuilder pb = new ProcessBuilder("cmd.exe", "/c", command);
             Process p = pb.start();
@@ -31,6 +63,7 @@ public class Games {
                 String wpm = "0";
                 String percentile = "0";
                 String end = "false";
+                String accuracy = "100";
                     while ((line = reader.readLine()) != null) { 
                         System.out.println("Check line " + line);
                         if (line.contains("wpm")) {
@@ -38,6 +71,9 @@ public class Games {
                         }
                         if (line.contains("progress")) {
                             percentile = line.split("=")[1];
+                        }
+                        if (line.contains("accuracy")) {
+                            accuracy = line.split("=")[1];
                         }
                         if (line.equals("stop")){
                             stop = true;
@@ -51,6 +87,7 @@ public class Games {
                     smap.put("game", "typeracer");
                     smap.put("wpm", wpm);
                     smap.put("progress", percentile);
+                    smap.put("accuracy", accuracy);
                     smap.put("id" , id);
                     smap.put("end" , end);
                     String ds = ParseMap.unparse(smap);
@@ -63,8 +100,12 @@ public class Games {
                 System.err.println("Error reading file: " + e.getMessage());
             }
         }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
+        System.out.println("Game ended");
+
     }
+
 }
