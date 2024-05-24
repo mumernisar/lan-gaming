@@ -1,0 +1,3 @@
+progress=16
+wpm=43
+accuracy=100
