@@ -69,7 +69,7 @@ def getInput(sentence , mode):
     convo_start_time = time.time()
     while len(sentence.replace("\n" , "")) > (len(st)):
         # if finished:  break
-        if((mode == "1" and time.time() - start_time >= 10) or (finished)): 
+        if((mode == "1" and time.time() - start_time >= 60) or (finished)): 
             text_file = open("convo.txt", "w")
             if(mode == '1'):
                 # x= f'{"Time= "} [{"#" *round( round(time.time()-start_time))}||{"_" * round(  (60 - round(time.time()-start_time)))}]\n'

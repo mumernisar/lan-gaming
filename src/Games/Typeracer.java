@@ -20,8 +20,8 @@ public class Typeracer {
 		Typeracer.out = WriteServer;
 	}
 
-	public void typeracer_handleData(HashMap<String, String> parsedMessage, String id ) {
-		// boolean rowIsEmpty = data[0][0] == null;
+	public void typeracer_handleData(HashMap<String, String> parsedMessage) {
+		String id = parsedMessage.get("id");
 		for (int i = 0; i < data.length; i++) {
 			boolean rowIsEmpty = data[i][0] == null;
 			if (data[i][0] != null && id.equals(data[i][0])) {
@@ -37,26 +37,7 @@ public class Typeracer {
 				break;
 			}
 		}
-		typeracer_printUsers(data);
-	}
-
-	private static void typeracer_printUsers(String[][] data) {
-		System.out.format("Initializing GUI %s", "🔮🎉😂🎊");
-
 		lb.updateLeaderboardWithData(data);
-
-		// System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
-		// System.out.println("   Name                 |       Progress         |  Words Per Minute(WPM) |     Accuracy    ");
-		// System.out.println("--------------------------------------------------------------------------------------------");
-		// for (String[] row : data) {
-		// 	if (row[0] != null) {
-		// 		String name = row[0];
-		// 		String progress = row[1];
-		// 		String wpm = row[2];
-		// 		String accuracy = row[3];
-		// 		System.out.format("%-24s|%-24s|%-24s|%-24s\n", name, (progress), (wpm), accuracy);
-		// 	}
-		// }
 	}
 
 	private void printLeaderboard(HashMap<String, String> data) {
@@ -100,7 +81,7 @@ public class Typeracer {
 			tr.typeracer(username)
 			).start();
 		}else if("data".equals(msg.get("payload"))){
-			tr.typeracer_handleData(msg , username);
+			tr.typeracer_handleData(msg);
 		}else if("leaderboard".equals(msg.get("payload"))){
 			System.out.println("Leaderboard" + msg.get("leaderboard"));
 			if (username.equals(msg.get("id"))){

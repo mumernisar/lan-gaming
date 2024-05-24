@@ -98,29 +98,32 @@ public final class Client {
 	// private String messageToSend;
 	
     private  void handleIncomingMessages() {
-
         try {
             while (socket.isConnected()) {
                 String message = ReadServer.readLine();
                 HashMap<String, String> parsedMessage = ParseMap.parse(message);
                
                 String messageType = parsedMessage.get("type");
-                switch (messageType) {
-                    case "typeracer":
-                        Typeracer.handleGame(parsedMessage,username ,  WriteServer);
-                        break;
-                    case "capital":
-						CountryGuess.handleGame(username);
-                        break;
-					case "tictactoe":
-						// handleGameDataMessage(data , parsedMessage);
-						break;
-
-					// general type message
-                    default:
-                        handleDefaultMessage(parsedMessage );
-                        break;
-                }
+				if  (messageType == null) { 
+					System.out.println(message);
+				}else {
+					switch (messageType) {
+						case "typeracer":
+							Typeracer.handleGame(parsedMessage,username ,  WriteServer);
+							break;
+						case "capital":
+							CountryGuess.handleGame(username);
+							break;
+						case "tictactoe":
+							// handleGameDataMessage(data , parsedMessage);
+							break;
+	
+						// general type message
+						default:
+							handleDefaultMessage(parsedMessage );
+							break;
+					}
+				}
             }
         } catch (IOException e) {
 			e.printStackTrace();
@@ -130,9 +133,11 @@ public final class Client {
         }
     }
     
-    private static void handleDefaultMessage(HashMap<String, String> parsedMessage) {
+    private  void handleDefaultMessage(HashMap<String, String> parsedMessage) {
         if (parsedMessage.containsKey("payload")) {
-            System.out.println(parsedMessage.get("payload"));
+			if (parsedMessage.containsKey("id") && !parsedMessage.get("id").equals(username)) {
+            System.out.println(parsedMessage.get("id") + " says " +parsedMessage.get("payload"));
+			}
         } else {
             System.out.println("Something might have gone wrong. Data: " + parsedMessage);
         }

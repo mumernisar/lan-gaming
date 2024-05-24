@@ -28,7 +28,6 @@ public final class ClientHandler implements Runnable {
 			bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 			this.clientUsername = bufferedReader.readLine();
-
 		} catch (IOException e) {
 			closeAll(socket, bufferedReader, bufferedWriter);
 		}
@@ -36,7 +35,6 @@ public final class ClientHandler implements Runnable {
 	public void init() {
         clientHandlers.add(this);
 		Server.addWriter(writer);
-        broadcastMessageToClients("SERVER: " + clientUsername + " has entered the chat!");
     }
 
 	@Override
@@ -47,33 +45,16 @@ public final class ClientHandler implements Runnable {
 		while (socket.isConnected()) {
 			try {
 				messageFromClients = bufferedReader.readLine();
-				// handleClientCommunication(messageFromClients);
-				// // broadcastMessageToClients(messageFromClients);
 				broadcastMessage(messageFromClients);
 			} catch (IOException e){
-				System.out.println("Client disconnected");
+				System.out.println("Client disconnected " + clientUsername);
 				closeAll(socket, bufferedReader, bufferedWriter);
 				break;
 			}
 		}
 	}
-	//////////////////////////////////////////////////////////////////////////////////////////////////////
-	//////////////////////////////////////////////////////////////////////////////////////////////////////
-	//////////////////////////////////////////////////////////////////////////////////////////////////////
-	//////////////////////////////////////////////////////////////////////////////////////////////////////
-	//////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    //    private void handleClientCommunication(String messageFromClients) throws IOException {
-    //         try (Scanner in = new Scanner(socket.getInputStream())) {
-    //             while (messageFromClients != null) {
-    //                 String input = in.nextLine();
-    //                 broadcastMessage(messageFromClients);
-    //             }
-    //         }
-    //     }
 
         private void broadcastMessage(String input) {
-            System.out.println("Received input: " + input);
             for (PrintWriter client : writers) {
                 String message = processInput(input);
                 System.out.println("Broadcasting: " + message);

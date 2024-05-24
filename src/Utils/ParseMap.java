@@ -26,4 +26,14 @@ public class ParseMap {
 		}
 		return map;
 	}
+	// public void sendHashMap(HashMap<String, String> data , ObjectOutputStream out) throws IOException {
+    //         out.writeObject(data);
+        
+    // }
+
+    // @SuppressWarnings("unchecked")
+	// public HashMap<String, String> receiveHashMap(ObjectInputStream in) throws IOException, ClassNotFoundException {
+    //         return (HashMap<String, String>) in.readObject();
+    // }
+
 }
