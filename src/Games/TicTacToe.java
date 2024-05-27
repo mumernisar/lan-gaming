@@ -89,6 +89,22 @@ public class TicTacToe {
 		System.out.println("|---|---|---|");
 	}
 
+	static void gameHandler()
+	{
+		if ("run".equals(msg.get("payload"))) {
+			tr = new Typeracer(WriteServer);
+			lb.initializeGUI();
+		   new Thread(() ->
+		   // Typeracer.typeracer(ReadServer , username)
+		   tr.typeracer(username)
+		   ).start();
+	   }else if("data".equals(msg.get("payload"))){
+		   tr.typeracer_handleData(msg);
+	   }else {
+		   System.out.println("Game not typeracer or ID is null " + msg.get("id"));
+	   }
+	}
+
 	public static void startTicTacToe()
 	{
 		Scanner in = new Scanner(System.in);
