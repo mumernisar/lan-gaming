@@ -7,6 +7,7 @@ import java.util.Scanner;
 public class fetchIP {
 
 	public static String recieveIP() {
+		
 		try {
 			DatagramSocket socket = new DatagramSocket(8888);
 			byte[] receiveData = new byte[1024];
@@ -18,6 +19,7 @@ public class fetchIP {
 			// Recieve and returnIP
 			String ipAddress = new String(packet.getData()).trim();
 			socket.close();
+			System.out.println(ipAddress);
 			return ipAddress;
 
 		} catch (IOException e) {

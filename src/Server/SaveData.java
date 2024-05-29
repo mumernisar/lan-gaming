@@ -4,8 +4,9 @@ import java.io.*;
 import java.util.*;
 
 public class SaveData {
+    
     /// modify this function to work for you aswell
-    public static int save( HashMap<String, String> userData) {
+    public static int save (HashMap<String, String> userData) {
         System.out.println(System.getProperty("user.dir"));
         File file = new File(System.getProperty("user.dir")+"/src/Server/userData/typeracer/leaderboard.txt");
         List<String[]> leaderboard = new ArrayList<>();
@@ -20,6 +21,7 @@ public class SaveData {
             }
         }
 
+        
         int wpm = Integer.parseInt(userData.get("wpm"));
         int accuracy = Integer.parseInt(userData.get("accuracy"));
         String username = userData.get("id");
@@ -51,7 +53,7 @@ public class SaveData {
 
     }
 
-    /// modify this function to work for you aswell also both these functions should be combined into one // someone do it 
+
 
     public static String getLeaderboardString(int highlightIndex) {
         File file = new File(System.getProperty("user.dir")+"/src/Server/userData/typeracer/leaderboard.txt");
@@ -68,6 +70,30 @@ public class SaveData {
             }
         }
         return leaderboardString.toString();
+    }
+
+    public static ArrayList<String> saveDataCapitals(String messageFromClients) {
+
+        ArrayList <String> resultData = new ArrayList<>();
+        if (messageFromClients.contains("points on")) {
+            String filepath = "src/Server/userData/capitals/leaderboard.txt";
+            try {
+                BufferedWriter resultWriter = new BufferedWriter(new FileWriter(filepath, true));
+                resultWriter.append(messageFromClients);
+                resultWriter.close();
+
+                BufferedReader reader = new BufferedReader(new FileReader(filepath));
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    resultData.add(line);
+                }
+                reader.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        
+        return resultData;
     }
 }
 

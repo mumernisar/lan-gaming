@@ -5,19 +5,18 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
 public class GUILeaderboard extends JFrame {
-
     private DefaultTableModel model;
-
     public GUILeaderboard() {
         model = new DefaultTableModel(null, new String[] {"Name", "Progress", "Speed"});
     }
-
     public void initializeGUI() {
         SwingUtilities.invokeLater(() -> {
-            // Frame setup
+            // win setup
             setTitle("Leaderboard");
             setSize(600, 200);
-            setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            setResizable(false);
+            // set closing bhaviour
+            setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
             // Table setup
             JTable table = new JTable(model);
@@ -36,7 +35,6 @@ public class GUILeaderboard extends JFrame {
             setVisible(true);
         });
     }
-
     public void updateLeaderboardWithData(String[][] data) {
         SwingUtilities.invokeLater(() -> {
             // Clear the previous data
@@ -50,8 +48,14 @@ public class GUILeaderboard extends JFrame {
             }
             revalidate();
             repaint();
-            System.out.println("Total Rows Now: " + model.getRowCount());
 
+        });
+    }
+
+    
+    public void closeGUI() {
+        SwingUtilities.invokeLater(() -> {
+            dispose();
         });
     }
 }

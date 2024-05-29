@@ -1,13 +1,9 @@
 package Server;
-import Utils.broadcastIP;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
 
+import Utils.broadcastIP;
+import java.io.*;
+import java.net.*;
+import java.util.*;
 
 public class Server {
 
@@ -45,23 +41,35 @@ public class Server {
             throw new RuntimeException(e);
         }
     }
+
+
     public static void addWriter(PrintWriter writer) {
         ClientWriters.add(writer);
     }
+
+
     public static void removeWriter(PrintWriter writer) {
         ClientWriters.remove(writer);
     }
+
+
     public static Set<PrintWriter> getWriters() {
         return ClientWriters;
     }
-    // broadcasting ip in another thread so as to nor hamper the socket of main thread
+
+
+    // broadcasting ip in another thread so as to not hamper the socket of main thread
     public static void uploadIP() {
-        new Thread(() -> {
-            broadcastIP.startBroadcasting(200);
+        new Thread(new Runnable() { // Anonymous Inner class
+            @Override
+            public void run() {
+                broadcastIP.startBroadcasting(200);
+            }
         }).start();
     }
+    
 
-    public static void main(String[] args) throws IOException {
+    public static void startServer() throws IOException {
 
         System.out.println("Server has started!");
         ServerSocket serverSocket = new ServerSocket(12345);

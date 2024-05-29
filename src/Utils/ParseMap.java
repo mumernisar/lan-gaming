@@ -3,6 +3,8 @@ package Utils;
 import java.util.HashMap;
 
 public class ParseMap {
+
+
 	public static String unparse(HashMap<String, String> map) {
 		StringBuilder builder = new StringBuilder();
 		for (HashMap.Entry<String, String> entry : map.entrySet()) {
@@ -16,6 +18,7 @@ public class ParseMap {
 	}
 
 	public static HashMap<String, String> parse(String string) {
+		
 		HashMap<String, String> map = new HashMap<>();
 		String[] entries = string.split(",");
 		for (String entry : entries) {

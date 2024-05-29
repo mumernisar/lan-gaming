@@ -80,6 +80,8 @@ def getInput(sentence , mode):
                 # x = f'Progress=  [{"#" * round(len(st)/5)}||{"_" * round((len(sentence) - len(st)) / 5 )}]  Time: { round(time.time()-start_time)}\n'
                 progress = int((len(st) / len(sentence)) * 100) # Percentage of sentence typed
                 elapsed_time = int(time.time() - start_time)
+                if progress > 100:
+                    progress = 100
                 x = f'progress={progress}\n'
 
             wpm = calculate_wpm(time.time() - start_time , st)
@@ -210,10 +212,7 @@ print(" " * 10 , "_____ \\___  __ \\  _ \\  _ \\  __  /    __  /  _  _ \\_  ___/
 print(" " * 10 , "____/ /__  /_/ /  __/  __/ /_/ /     _  /   /  __/(__  )/ /_  ")
 print(" " * 10 , "/____/ _  .___/\\___/\\___/\\__,_/      /_/    \\___//____/ \\__/  ")
 print(" " * 10 , "        /_/                                                   ")
-# Clear convo.txt file 
-text_file = open("convo.txt", "w")
-text_file.write("")
-text_file.close()
+
 
 begin()
 

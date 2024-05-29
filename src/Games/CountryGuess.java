@@ -1,4 +1,5 @@
 package Games;
+
 import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -24,49 +25,26 @@ public class CountryGuess {
 		CountryGuess.clientName = clientName;
 	}
 
-	public CountryGuess() {
 
-	}
+	public String startGame() {
 
-	// public static void main(String[] args) {
-
-	//     CountryGuess countryGuess = new CountryGuess();
-
-	//     countryGuess.readCountriesFromFile();
-	//     countryGuess.setGameDifficulty();
-	//     countryGuess.guessCountry();
-	//     // your result
-	//     countryGuess.displayResult();
-	//     countryGuess.setLeaderboard();
-	//     countryGuess.displayLeaderBoard();
-	// }
-	public static void handleGame(String username) {
-		CountryGuess user = new CountryGuess(username);
-		user.startGame();
-	}
-	public void startGame() {
 		readCountriesFromFile();
 		setGameDifficulty();
 		guessCountry();
-		displayResult();
-		setLeaderboard();
-		displayLeaderBoard();
+
+		return result();
+
 	}
+
 
 	public String result() {
-		return clientName + " got " + correct + "/" + repeatGame + " points on " + getSystemDateAndTime();
-	}
-
-	private void displayResult() {
-		System.out.println("-------------------------------------------");
-		System.out.println(result());
-		System.out.println("-------------------------------------------");
+		return clientName + ":  got " + correct + "/" + repeatGame + " points on " + getSystemDateAndTime();
 	}
 
 
 	private void readCountriesFromFile() {
-		String countriesFile = "src/Games/capitals/countries.txt";
 
+		String countriesFile = "src/Games/capitals/countries.txt";
 		String capitalsFile = "src/Games/capitals/capitals.txt";
 
 		String countrriesarray[] = new String[135];
@@ -90,31 +68,29 @@ public class CountryGuess {
 		countries = new ArrayList<>(Arrays.asList(countrriesarray));
 		capitals = new ArrayList<>(Arrays.asList(capitalssarray));
 	}
-
-
 	private void setGameDifficulty() {
 
 		System.out.println("Enter the difficulty level: ");
 		System.out.println("\n1 for easy\n2 for medium\n3 for hard\n4 for ultra");
 		input = scan.nextLine();
 		while (true) {
-			if (input.equalsIgnoreCase("1")) {
-				secondsToWait = 9;   // 14 seconds to think of an answer
+			if (input.equals("1")) {
+				secondsToWait = 9;   // 9 seconds to think of an answer
 				this.difficulty = 50; // top 50 populous countries will be asked
 				this.repeatGame = 3;  // game repeats 3 times
 				break;
-			} else if (input.equalsIgnoreCase("2")) {
-				secondsToWait = 8;    // 12 seconds to think of an answer
+			} else if (input.equals("2")) {
+				secondsToWait = 8;    // 8 seconds to think of an answer
 				this.difficulty = 90;  // top 90 populous countries will be asked
 				this.repeatGame = 4;   // game repeat 4 times
 				break;
-			} else if (input.equalsIgnoreCase("3")) {
-				secondsToWait = 7;    // 10 seconds to think of an answer
+			} else if (input.equals("3")) {
+				secondsToWait = 7;    // 7 seconds to think of an answer
 				this.difficulty = 135; // top 135 populous countries will be asked
 				this.repeatGame = 5;   // game repeat 5 times
 				break;
-			} else if (input.equalsIgnoreCase("4")) {
-				secondsToWait = 5;    // 10 seconds to think of an answer
+			} else if (input.equals("4")) {
+				secondsToWait = 5;    // 5 seconds to think of an answer
 				this.difficulty = 135; // top 135 populous countries will be asked
 				this.repeatGame = 6;   // game repeat 5 times
 				break;
@@ -164,15 +140,19 @@ public class CountryGuess {
 
 		int timesToRepeat =  this.repeatGame;
 		for (int i = 0; i < timesToRepeat; i++) {
+
 			int randomCountry = randomCountryGenerator();
+
 			System.out.println(capitals.get(randomCountry));
 			System.out.println("Guess the capital of: " + countries.get(randomCountry));
+
 			// Displays the timer according to the difficulty
 			displayTimer(" seconds to guess...", secondsToWait);
 			// user input validation is called
-			String capitalGuessed = timedUserInput(10);
+			String capitalGuessed = timedUserInput(9);
+
 			// checks the country
-			if (capitalGuessed != null && capitalGuessed.equalsIgnoreCase(capitals.get(randomCountry))){
+			if (capitalGuessed.equalsIgnoreCase(capitals.get(randomCountry))) {
 				correct++;
 			}
 		}
@@ -180,7 +160,7 @@ public class CountryGuess {
 
 	private String timedUserInput(int timeToWait) {
 
-		System.out.println("You have 8 seconds to answer...");
+		System.out.println("You have " + timeToWait + " seconds to answer...");
 		long startTime = System.currentTimeMillis(); // Get the start time
 
 		// Wait for user input
@@ -193,34 +173,8 @@ public class CountryGuess {
 		// gives result in milliseconds
 		if (elapsedTime > (timeToWait * 1000)) {
 			System.out.println("You failed to answer in " + timeToWait + " seconds");
-			return null;
+			return "false";
 		}
 		return userInput;
-	}
-
-
-	private void setLeaderboard() {
-		try (BufferedWriter result = new BufferedWriter(new FileWriter("src/Games/capitals/leaderboard.txt", true))) {
-			result.append(result());
-			result.newLine();
-			result.append(" ");
-			result.flush();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	private void displayLeaderBoard() {
-		try (BufferedReader reader = new BufferedReader (new FileReader("src/Games/capitals/leaderboard.txt"))) {
-
-			String line;
-			while ((line = reader.readLine()) != null) {
-				System.out.println(line);
-			}
-			System.out.println("------------------------------------------");
-			reader.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 }
