@@ -8,6 +8,19 @@ import playsound
 
 # Function to generate a random sentence from a file (text.txt)
 def generate_random_sentence(mode):
+    """    Generate a random sentence from a file.
+
+    This function reads the content of the file "text.txt" and generates a
+    random sentence based on the specified mode.
+
+    Args:
+        mode (str): The mode for generating the random sentence. If '1', two random lines
+            are concatenated to form the sentence.
+
+    Returns:
+        str: A randomly generated sentence based on the specified mode.
+    """
+
     text_file = open("text.txt", "r")
     lines = text_file.readlines()
     if mode == '1':
@@ -16,6 +29,21 @@ def generate_random_sentence(mode):
 
 # Function for printing the current string each time a character is entered
 def printStr_Helper(st , start_time , sentence , mistakes , mode):
+    """    Print the current string each time a character is entered.
+
+    This function prints the current string each time a character is
+    entered, along with a custom progress bar. It also highlights any
+    mistakes made in the input string.
+
+    Args:
+        st (str): The current string being typed.
+        start_time (float): The start time of typing.
+        sentence (str): The complete sentence to be typed.
+        mistakes (list): A list of indexes where mistakes were made in the input string.
+        mode (str): The mode of progress bar, either '1' for time increment or any other
+            value for progress progression.
+    """
+
     click.clear()
     print()
     # A little custom progressbar that either works on time increment or progress progression
@@ -52,6 +80,22 @@ def printStr_Helper(st , start_time , sentence , mistakes , mode):
     click.echo("\rGo... : " + (st) , nl = False)
     
 def getInput(sentence , mode):
+    """    Get input from the user and calculate typing speed and accuracy.
+
+    This function takes a sentence and a mode as input and allows the user
+    to type the given sentence. It calculates the typing speed, accuracy,
+    and progress and writes the results to a file.
+
+    Args:
+        sentence (str): The sentence that the user needs to type.
+        mode (str): The mode of typing, either "1" for timed mode or "2" for free mode.
+
+    Returns:
+        tuple: A tuple containing: - str: The string typed by the user. - int: The
+            number of correct characters typed. - int: The time taken to type the
+            sentence.
+    """
+
     print("\r                           ",end="")
     click.echo("\rGo... : ", nl = False)
     finished = False
@@ -157,6 +201,19 @@ def getInput(sentence , mode):
 
 # Function to calculate typing speed in WPM
 def calculate_wpm(time_taken, sentence):
+    """    Calculate the typing speed in words per minute (WPM).
+
+    It calculates the typing speed by dividing the total number of words in
+    the given sentence by the time taken to type the sentence in minutes.
+
+    Args:
+        time_taken (float): The time taken to type the sentence in seconds.
+        sentence (str): The input sentence for which typing speed is to be calculated.
+
+    Returns:
+        float: The typing speed in words per minute (WPM).
+    """
+
     sentence_length = len(sentence)
     time_in_mins = time_taken / 60
     words = sentence_length / 5
@@ -165,6 +222,13 @@ def calculate_wpm(time_taken, sentence):
 
 # Main Function Of The Program
 def begin():
+    """    Main function to start the typing speed test game.
+
+    Selects the mode for the game, generates a random sentence based on the
+    mode, prompts the user to type the sentence, calculates the typing speed
+    and accuracy, and optionally updates the leaderboard.
+    """
+
     click.echo("Select mode: \n 1. One minute Rush \n 2. Speed Test \n Choice[1/2]: ",nl=False)
     mode = click.getchar(echo=True)
     while mode != "1" and mode != "2":

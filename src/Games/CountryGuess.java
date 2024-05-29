@@ -26,6 +26,12 @@ public class CountryGuess {
 	}
 
 
+	/**
+	 * Starts the game by reading countries from a file, setting game difficulty, and allowing the user to guess a country.
+	 *
+	 * @return the result of the game
+	 * @throws IOException if an I/O error occurs while reading the countries from the file
+ 	*/
 	public String startGame() {
 
 		readCountriesFromFile();
@@ -37,11 +43,24 @@ public class CountryGuess {
 	}
 
 
+	/**
+	 * Returns the result of the game for the client.
+	 *
+	 * @return A string representing the result in the format "clientName: got correct/repeatGame points on systemDateAndTime"
+	 *
+	 * @throws NullPointerException if clientName is null
+ 	*/
 	public String result() {
 		return clientName + ":  got " + correct + "/" + repeatGame + " points on " + getSystemDateAndTime();
 	}
 
 
+	/**
+	 * Reads the countries and capitals from the files "countries.txt" and "capitals.txt" respectively
+	 * and populates the countries and capitals ArrayLists.
+	 *
+	 * @throws IOException if an I/O error occurs while reading the files
+ 	*/
 	private void readCountriesFromFile() {
 
 		String countriesFile = "src/Games/capitals/countries.txt";
@@ -68,6 +87,14 @@ public class CountryGuess {
 		countries = new ArrayList<>(Arrays.asList(countrriesarray));
 		capitals = new ArrayList<>(Arrays.asList(capitalssarray));
 	}
+	/**
+	 * Sets the game difficulty based on user input.
+	 *
+	 * This method prompts the user to enter the difficulty level and sets the game parameters accordingly.
+	 *
+	 * @throws InputMismatchException if the input is not a valid integer
+	 * @throws NoSuchElementException if no line is found
+ 	*/
 	private void setGameDifficulty() {
 
 		System.out.println("Enter the difficulty level: ");
@@ -102,6 +129,13 @@ public class CountryGuess {
 	}
 
 
+	/**
+	 * Displays a timer with the given string for the specified number of seconds.
+	 *
+	 * @param str the string to display with the timer
+	 * @param seconds the number of seconds for the timer
+	 * @throws InterruptedException if the thread is interrupted while sleeping
+ 	*/
 	private void displayTimer(String str, int seconds) {
 		String line = "";
 		for (int i = seconds; i > 0; i--) {
@@ -115,6 +149,11 @@ public class CountryGuess {
 	}
 
 
+	/**
+	 * Returns the current system date and time in the format dd/MM/yyyy HH:mm:ss.
+	 *
+	 * @return a string representing the current system date and time
+ 	*/
 	private String getSystemDateAndTime() {
 		// returns dateand time at that instant in format dd/MM/yyyy HH:mm:ss
 		LocalDateTime now = LocalDateTime.now();
@@ -123,6 +162,12 @@ public class CountryGuess {
 	}
 
 
+	/**
+	 * Pauses the execution of the current thread for a specified number of milliseconds.
+	 *
+	 * @param ms the number of milliseconds to pause the execution
+	 * @throws InterruptedException if any thread has interrupted the current thread
+ 	*/
 	private void stopExecFor(int ms) {
 		try {
 			Thread.sleep(ms);
@@ -132,10 +177,22 @@ public class CountryGuess {
 		}
 	}
 
+	/**
+	 * Generates a random number representing a country based on the difficulty level.
+	 *
+	 * @return An integer representing a randomly generated country.
+	 * @throws IllegalArgumentException if the difficulty level is negative.
+ 	*/
 	private int randomCountryGenerator() {
 		return (int) Math.round(Math.random() * difficulty);
 	}
 
+	/**
+	 * This method allows the user to guess the capital of a randomly selected country.
+	 * It repeats the game for a specified number of times and prompts the user to guess the capital.
+	 *
+	 * @throws NoSuchElementException if the randomCountryGenerator() method returns an invalid index
+ 	*/
 	private void guessCountry() {
 
 		int timesToRepeat =  this.repeatGame;
@@ -158,6 +215,14 @@ public class CountryGuess {
 		}
 	}
 
+	/**
+	 * This method waits for user input for a specified amount of time and returns the input if received within the time limit.
+	 * If the user fails to input within the time limit, it returns "false".
+	 *
+	 * @param timeToWait the time limit in seconds for user input
+	 * @return the user input if received within the time limit, or "false" if the time limit is exceeded
+	 * @throws NoSuchElementException if no line was found
+ 	*/
 	private String timedUserInput(int timeToWait) {
 
 		System.out.println("You have " + timeToWait + " seconds to answer...");

@@ -6,6 +6,16 @@ text_file.write("")
 text_file.close()
 
 def import_or_install(package):
+    """    Import a package, and if it is not found, attempt to install it using
+    pip.
+
+    Args:
+        package (str): The name of the package to import or install.
+
+    Raises:
+        ImportError: If the package cannot be imported.
+    """
+
     try:
         __import__(package)
     except ImportError:

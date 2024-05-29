@@ -20,6 +20,12 @@ public class Typeracer {
 		Typeracer.out = WriteServer;
 	}
 
+	/**
+	 * Updates the data for the typeracer game based on the parsed message.
+	 *
+	 * @param parsedMessage a HashMap containing the parsed message data
+	 * @throws NullPointerException if parsedMessage is null
+ 	*/
 	public void typeracer_handleData(HashMap<String, String> parsedMessage) {
 		String id = parsedMessage.get("id");
 		for (int i = 0; i < data.length; i++) {
@@ -40,6 +46,12 @@ public class Typeracer {
 		lb.updateLeaderboardWithData(data);
 	}
 
+	/**
+	 * Prints the leaderboard table based on the provided data.
+	 *
+	 * @param data a HashMap containing the leaderboard data, including "leaderboard" and "index" values
+	 * @throws NumberFormatException if the "index" value cannot be parsed to an integer
+ 	*/
 	private void printLeaderboard(HashMap<String, String> data) {
 		String leaderboardS = data.get("leaderboard");
 		List<String[]> leaderboard = new ArrayList<>();
@@ -72,6 +84,14 @@ public class Typeracer {
 	}
 	
 /// all in one handler
+	/**
+	 * Handles the game based on the given message, username, and server writer.
+	 *
+	 * @param msg the message containing payload and other game data
+	 * @param username the username of the player
+	 * @param WriteServer the BufferedWriter for writing to the server
+	 * @throws NullPointerException if msg is null
+ 	*/
 	public static void handleGame(HashMap<String, String>  msg ,String username , BufferedWriter WriteServer ) {
 		if ("run".equals(msg.get("payload"))) {
 			 tr = new Typeracer(WriteServer);
@@ -93,6 +113,13 @@ public class Typeracer {
 	}
 
 	
+	/**
+	 * Launches the Typeracer game and retrieves game statistics.
+	 *
+	 * @param id the unique identifier for the game session
+	 * @throws IOException if an I/O error occurs while reading the file
+	 * @throws InterruptedException if the current thread is interrupted while sleeping
+ 	*/
 	public  void typeracer(String id) {
 		try {
 			String command = "start powershell.exe -Command \"cd src/Games/typeracer ; python dependencies.py ; python Typeracer.py\"";
