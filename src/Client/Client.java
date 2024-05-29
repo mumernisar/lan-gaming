@@ -35,6 +35,12 @@ public class Client {
 	}
 
 	// initial message sent(only the username is sent so that it can be shown that user has joined
+	/**
+	 * Sends a message to the server with the given name.
+	 *
+	 * @param name the name to be sent to the server
+	 * @throws IOException if an I/O error occurs while sending the message
+ 	*/
 	private void sendMessage(String name) {
 		try {
 			WriteServer.write(name);
@@ -49,6 +55,14 @@ public class Client {
 
 	// Client handler is waiting for this message in its constructor (line 28)
 	// limitation will not start game for other users if send from one....! --------------------------!!! NOTE !!!-------------------------- FIXED
+	/**
+	 * Sends a message to the server.
+	 *
+	 * This method sends a message to the server by reading input from the user and writing it to the server.
+	 * It continues to send messages until the socket is connected. If the user enters "exit", the method breaks the loop and stops sending messages.
+	 *
+	 * @throws IOException if an I/O error occurs when reading from the input stream or writing to the output stream.
+ 	*/
 	private void sendMessage() {
 		try {
 			Scanner scan = new Scanner(System.in);
@@ -80,6 +94,15 @@ public class Client {
 	}
 
 
+	/**
+	 * Closes the provided socket, BufferedReader, and BufferedWriter if they are not null.
+	 *
+	 * @param socket the socket to be closed
+	 * @param ReadServer the BufferedReader to be closed
+	 * @param WriteServer the BufferedWriter to be closed
+	 *
+	 * @throws IOException if an I/O error occurs while closing the socket, BufferedReader, or BufferedWriter
+ 	*/
 	public void closeAll(Socket socket, BufferedReader ReadServer, BufferedWriter WriteServer) {
 		try {
 			if (ReadServer != null) {
@@ -96,6 +119,12 @@ public class Client {
 		}
 	}
 
+	/**
+	 * Checks the message for the "play capital" game and initiates the game if the message matches.
+	 *
+	 * @param message the message to be checked
+	 * @throws IOException if an I/O error occurs while writing the result to the client handler
+ 	*/
 	private void checkMesasgeForCapitalGame(String message) throws IOException {
 		if (message.equalsIgnoreCase("play capital")) {
 			CountryGuess user = new CountryGuess(username);
@@ -107,6 +136,13 @@ public class Client {
 	}
 	
 
+						/**
+						 * Handles incoming messages from the server.
+						 *
+						 * This method continuously reads messages from the server and processes them based on the message type.
+						 *
+						 * @throws IOException if an I/O error occurs while reading messages from the server.
+ 						*/
     private  void handleIncomingMessages() {
         try {
             while (socket.isConnected()) {
@@ -139,6 +175,12 @@ public class Client {
         }
     }
     
+    /**
+     * Handles the default message with the given parsed message.
+     *
+     * @param parsedMessage a HashMap containing the parsed message
+     * @throws NullPointerException if parsedMessage is null
+     */
     private  void handleDefaultMessage(HashMap<String, String> parsedMessage) {
         if (parsedMessage.containsKey("payload")) {
 			if (parsedMessage.containsKey("id") && !parsedMessage.get("id").equals(username)) {
@@ -150,6 +192,11 @@ public class Client {
     }
 
 
+	/**
+	 * Starts the client for the group chat.
+	 *
+	 * @throws Exception if an error occurs during the client setup or communication
+ 	*/
 	public static void startClient() throws Exception {
 
 		Scanner scan = new Scanner(System.in);
@@ -185,6 +232,11 @@ public class Client {
 		// receiving messages)
 		new Thread( new Runnable () { // Anonymous Inner class
 			@Override 
+			/**
+			 * Executes the run method to handle incoming messages for the client.
+			 *
+			 * @throws SomeException if there is an issue handling incoming messages.
+ 			*/
 			public void run() {
 				client.handleIncomingMessages();
 			}

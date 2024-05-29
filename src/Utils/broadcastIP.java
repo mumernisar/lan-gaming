@@ -4,6 +4,15 @@ import java.net.*;
 
 public class broadcastIP {
 
+	/**
+	 * Starts broadcasting the server's IP address using UDP broadcast.
+	 *
+	 * @param delayInEachPulse the delay in milliseconds between each broadcast pulse
+	 * @throws SocketException if an error occurs while creating or accessing a socket
+	 * @throws UnknownHostException if the IP address of the broadcast destination is invalid
+	 * @throws IOException if an I/O error occurs while sending the broadcast packet
+	 * @throws InterruptedException if the current thread is interrupted while sleeping
+ 	*/
 	public static void startBroadcasting(int delayInEachPulse) {
 
 		try {

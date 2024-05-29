@@ -9,6 +9,14 @@ public class GUILeaderboard extends JFrame {
     public GUILeaderboard() {
         model = new DefaultTableModel(null, new String[] {"Name", "Progress", "Speed"});
     }
+    /**
+     * Initializes the GUI for the Leaderboard application.
+     * This method sets up the graphical user interface by creating and configuring
+     * the necessary components such as the JFrame, JTable, and JScrollPane.
+     * It also adjusts the column widths of the table and displays the JFrame.
+     *
+     * @throws IllegalStateException if the GUI components cannot be initialized
+     */
     public void initializeGUI() {
         SwingUtilities.invokeLater(() -> {
             // win setup
@@ -35,6 +43,12 @@ public class GUILeaderboard extends JFrame {
             setVisible(true);
         });
     }
+    /**
+     * Updates the leaderboard with the provided data.
+     *
+     * @param data a 2D array of String representing the data to update the leaderboard with
+     * @throws NullPointerException if the provided data is null
+     */
     public void updateLeaderboardWithData(String[][] data) {
         SwingUtilities.invokeLater(() -> {
             // Clear the previous data
@@ -53,6 +67,11 @@ public class GUILeaderboard extends JFrame {
     }
 
     
+    /**
+     * Closes the GUI by disposing of the current window.
+     *
+     * @throws IllegalStateException if the GUI cannot be closed
+     */
     public void closeGUI() {
         SwingUtilities.invokeLater(() -> {
             dispose();

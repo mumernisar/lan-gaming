@@ -6,6 +6,12 @@ import java.util.Scanner;
 
 public class fetchIP {
 
+	/**
+	 * Receives the IP address from a server or manually from user input.
+	 *
+	 * @return the received IP address
+	 * @throws IOException if an I/O error occurs while receiving the IP address
+ 	*/
 	public static String recieveIP() {
 		
 		try {

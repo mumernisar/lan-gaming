@@ -11,6 +11,12 @@ public class TicTacToe {
 	// CheckWinner method will
 	// decide the combination
 	// of three box given below.
+				/**
+				 * Checks for a winner in the Tic Tac Toe game board.
+				 *
+				 * @return "X" if player X wins, "O" if player O wins, "draw" if the game is a draw, or null if the game is ongoing.
+				 * @throws IllegalArgumentException if the game board is not properly initialized
+ 				*/
 	static String checkWinner()
 	{
 		for (int a = 0; a < 8; a++) {
@@ -77,6 +83,13 @@ public class TicTacToe {
 	| 7 | 8 | 9 |
 	|---|---|---|*/
 
+	/**
+	 * Prints the Tic-Tac-Toe board to the console.
+	 *
+	 * This method prints the current state of the Tic-Tac-Toe board to the console.
+	 *
+	 * @throws ArrayIndexOutOfBoundsException if the board array does not have at least 9 elements
+ 	*/
 	static void printBoard()
 	{
 		System.out.println("|---|---|---|");
@@ -89,6 +102,12 @@ public class TicTacToe {
 		System.out.println("|---|---|---|");
 	}
 
+	/**
+	 * This method starts a 3x3 Tic Tac Toe game and allows two players to take turns placing their marks on the board.
+	 * It handles user input, checks for valid moves, and determines the winner or a draw.
+	 *
+	 * @throws InputMismatchException if the user enters an invalid input that is not in the range from 1 to 9.
+ 	*/
 	public static void startTicTacToe()
 	{
 		Scanner in = new Scanner(System.in);
